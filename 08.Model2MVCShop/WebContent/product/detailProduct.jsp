@@ -67,22 +67,34 @@ function fncAlert(){
 				<td width="104" class="ct_write">상품이미지 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle" /> </td>
 				<td bgcolor="D6D6D6" width="1"></td>
 				<td class="ct_write01">
+				
 					<!-- 파일명 확인 <c:out value="*${product.fileName}*"/> -->
 					<c:choose>
+					
 						<c:when test="${!empty product.fileName && product.fileName!=' '}">
-							<img src = "/images/uploadFiles/${product.fileName}">
+							<!-- 복수파일 처리 -->
+							<c:if test="${product.fileName.contains(',')}">
+								<img src = "/images/uploadFiles/${product.fileName.split(',')[0]}"><br>
+								<img src = "/images/uploadFiles/${product.fileName.split(',')[1]}">
+							</c:if>
+							<c:if test="${!product.fileName.contains(',')}">
+								<img src = "/images/uploadFiles/${product.fileName}">
+							</c:if>
 						</c:when>
-						<c:otherwise>									
+						
+						<c:otherwise>
 							<img src = "/images/empty.GIF">
 						</c:otherwise>
+						
 					</c:choose>
+					
 				</td>
 			</tr>
 			<tr>
 				<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 			</tr>
 			<tr>
-				<td width="104" class="ct_write">상품상세정보 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle" /> </td>
+				<td width="104" class="ct_write">상품상세정보<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle" /> </td>
 				<td bgcolor="D6D6D6" width="1"></td>
 				<td class="ct_write01">${product.prodDetail}</td>
 			</tr>

@@ -93,12 +93,22 @@
 						<td height="26">
 							<!-- 파일명 확인 <c:out value="*${product.fileName}*"/> -->
 							<c:choose>
+								
 								<c:when test="${!empty product.fileName && product.fileName!=' '}">
-									<img src = "/images/uploadFiles/${product.fileName}">
+									<!-- 복수파일 처리 -->
+									<c:if test="${product.fileName.contains(',')}">
+										<img src = "/images/uploadFiles/${product.fileName.split(',')[0]}"><br>
+										<img src = "/images/uploadFiles/${product.fileName.split(',')[1]}">
+									</c:if>
+									<c:if test="${!product.fileName.contains(',')}">
+										<img src = "/images/uploadFiles/${product.fileName}">
+									</c:if>
 								</c:when>
+								
 								<c:otherwise>									
 									<img src = "/images/empty.GIF">
 								</c:otherwise>
+								
 							</c:choose>
 						</td>
 					</tr>

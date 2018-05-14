@@ -24,7 +24,7 @@ public class Product {
 		this.proTranCode = proTranCode;
 	}
 	public String getFileName() {
-		return fileName;
+		return fileName.trim();
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
