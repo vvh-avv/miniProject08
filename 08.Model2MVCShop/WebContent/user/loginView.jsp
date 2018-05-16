@@ -4,6 +4,7 @@
 <head>
 <title>로그인 화면</title>
 
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
@@ -44,30 +45,21 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<form name="loginForm" method="post" action="/user/login"
-		target="_parent">
+	<form name="loginForm" method="post" action="/user/login" target="_parent">
 
 		<div align="center">
 
-			<TABLE WITH="100%" HEIGHT="100%" BORDER="0" CELLPADDING="0"
-				CELLSPACING="0">
+			<TABLE WITH="100%" HEIGHT="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
 				<TR>
 					<TD ALIGN="CENTER" VALIGN="MIDDLE">
-
-						<table width="650" height="390" border="5" cellpadding="0"
-							cellspacing="0" bordercolor="#D6CDB7">
+						<table width="650" height="390" border="5" cellpadding="0" cellspacing="0" bordercolor="#D6CDB7">
 							<tr>
-								<td width="10" height="5" align="left" valign="top"
-									bordercolor="#D6CDB7">
-									<table width="650" height="390" border="0" cellpadding="0"
-										cellspacing="0">
+								<td width="10" height="5" align="left" valign="top" bordercolor="#D6CDB7">
+									<table width="650" height="390" border="0" cellpadding="0" cellspacing="0">
 										<tr>
-											<td width="305"><img src="/images/logo-spring.png"
-												width="305" height="390" /></td>
-											<td width="345" align="left" valign="top"
-												background="/images/login02.gif">
-												<table width="100%" height="220" border="0" cellpadding="0"
-													cellspacing="0">
+											<td width="305"><img src="/images/logo-spring.png" width="305" height="390" /></td>
+											<td width="345" align="left" valign="top" background="/images/login02.gif">
+												<table width="100%" height="220" border="0" cellpadding="0" cellspacing="0">
 													<tr>
 														<td width="30" height="100">&nbsp;</td>
 														<td width="100" height="100">&nbsp;</td>
@@ -76,8 +68,7 @@
 													</tr>
 													<tr>
 														<td width="30" height="50">&nbsp;</td>
-														<td width="100" height="50"><img
-															src="/images/text_login.gif" width="91" height="32" /></td>
+														<td width="100" height="50"><img src="/images/text_login.gif" width="91" height="32" /></td>
 														<td height="50">&nbsp;</td>
 														<td width="20" height="50">&nbsp;</td>
 													</tr>
@@ -86,40 +77,72 @@
 													</tr>
 													<tr>
 														<td width="30" height="30">&nbsp;</td>
-														<td width="100" height="30"><img
-															src="/images/text_id.gif" width="100" height="30" /></td>
-														<td height="30"><input type="text" name="userId"
-															class="ct_input_g" style="width: 180px; height: 19px"
-															maxLength='50' /></td>
+														<td width="100" height="30"><img src="/images/text_id.gif" width="100" height="30" /></td>
+														<td height="30"><input type="text" name="userId" class="ct_input_g" style="width: 180px; height: 19px" maxLength='50' /></td>
 														<td width="20" height="30">&nbsp;</td>
 													</tr>
 													<tr>
 														<td width="30" height="30">&nbsp;</td>
-														<td width="100" height="30"><img
-															src="/images/text_pas.gif" width="100" height="30" /></td>
-														<td height="30"><input type="password"
-															name="password" class="ct_input_g"
-															style="width: 180px; height: 19px" maxLength="50" /></td>
+														<td width="100" height="30"><img src="/images/text_pas.gif" width="100" height="30" /></td>
+														<td height="30"><input type="password" name="password" class="ct_input_g" style="width: 180px; height: 19px" maxLength="50" /></td>
 														<td width="20" height="30">&nbsp;</td>
 													</tr>
 													<tr>
 														<td width="30" height="20">&nbsp;</td>
 														<td width="100" height="20">&nbsp;</td>
 														<td height="20" align="center">
-															<table width="136" height="20" border="0" cellpadding="0"
-																cellspacing="0">
+															<table width="136" height="20" border="0" cellpadding="0" cellspacing="0">
 																<tr>
-																	<td width="56"><a href="javascript:fncLogin();">
-																			<img src="/images/btn_login.gif" width="56"
-																			height="20" border="0" />
-																	</a></td>
+																	<td width="56">
+																		<a href="javascript:fncLogin();">
+																			<img src="/images/btn_login.gif" width="56" height="20" border="0" />
+																		</a>
+																	</td>
 																	<td width="10">&nbsp;</td>
-																	<td width="70"><a href="addUserView.jsp;"> <img
-																			src="/images/btn_add.gif" width="70" height="20"
-																			border="0">
-																	</a></td>
+																	<td width="70">
+																		<a href="addUserView.jsp;">
+																			<img src="/images/btn_add.gif" width="70" height="20" border="0">
+																		</a>
+																	</td>
 																</tr>
 															</table>
+															
+															<!-- 카카오 로그인 추가 -->
+															<a id="kakao-login-btn"></a>
+															<a href="http://developers.kakao.com/logout"></a>
+															<script type='text/javascript'>
+															  //<![CDATA[
+															  // 사용할 앱의 JavaScript 키를 설정해 주세요.
+															  Kakao.init('b3eb26586b770154ea49919a7f59f2d2');
+															  // 카카오 로그인 버튼을 생성합니다.
+															  Kakao.Auth.createLoginButton({
+															    container: '#kakao-login-btn',
+															    success: function(authObj) {
+																	//alert(JSON.stringify(authObj));
+																	var accessToken = Kakao.Auth.getAccessToken();
+																	var refreshToken = Kakao.Auth.getRefreshToken();
+																	alert(accessToken);
+																	alert(refreshToken);
+																	/*
+																	if(refreshToken){
+																		Kakao.API.request({
+																			url : '/v1/user/me',
+																			success : function(res){
+																				var sData = JSON.stringify(res);
+																				alert(sData);
+																				sData = JSON.parse(sData);
+																				var nickName = sData.properties.ninkname;
+																			}
+																		});
+																	}*/
+															    },
+															    fail: function(err) {
+															       alert(JSON.stringify(err));
+															    }
+															  });
+															 //]]>
+															</script>
+																														
 														</td>
 														<td width="20" height="20">&nbsp;</td>
 													</tr>

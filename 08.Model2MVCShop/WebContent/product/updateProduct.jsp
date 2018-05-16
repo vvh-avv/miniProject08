@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <html>
 <head>
 <title>상품수정</title>
@@ -76,7 +78,7 @@ function FormatNumber3(num){
 
 <body bgcolor="#ffffff" text="#000000">
 
-	<form name="detailForm" method="post">
+	<form name="detailForm" method="post" enctype="multipart/form-data">
 
 		<input type="hidden" name="prodNo" value="${product.prodNo}" enctype="multipart/form-data"/>
 
@@ -152,7 +154,27 @@ function FormatNumber3(num){
 				<td width="104" class="ct_write">상품이미지</td>
 				<td bgcolor="D6D6D6" width="1"></td>
 				<td class="ct_write01">
-					<input type="file" name="fileName" class="ct_input_g" style="width: 200px; height: 19px" maxLength="13" value="${product.fileName}" />
+					<!-- 파일명 확인 <c:out value="*${product.fileName}*"/> -->
+					<c:choose>
+								
+						<c:when test="${!empty product.fileName && product.fileName!=' '}">
+							<!-- 복수파일 처리 -->
+							<c:if test="${product.fileName.contains(',')}">
+								<img src = "/images/uploadFiles/${product.fileName.split(',')[0]}"><br>
+								<img src = "/images/uploadFiles/${product.fileName.split(',')[1]}">
+							</c:if>
+							<c:if test="${!product.fileName.contains(',')}">
+								<img src = "/images/uploadFiles/${product.fileName}">
+							</c:if>
+						</c:when>
+						
+						<c:otherwise>
+							<img src = "/images/empty.GIF">
+						</c:otherwise>
+					
+					</c:choose><br>
+					<input type="hidden" name="fileName" class="ct_input_g" style="width: 200px; height: 19px" maxLength="13" value="${product.fileName}" />
+					<input multiple="multiple" type="file" name="file" class="ct_input_g" style="width: 200px; height: 19px" maxLength="13" value="${product.fileName}" />
 				</td>
 			</tr>
 			<tr>

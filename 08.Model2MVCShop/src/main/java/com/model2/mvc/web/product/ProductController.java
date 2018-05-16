@@ -142,12 +142,49 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="updateProduct", method=RequestMethod.POST)
-	public String updateProduct(@ModelAttribute("product") Product product) throws Exception{
+	public String updateProduct(@ModelAttribute("product") Product product, MultipartHttpServletRequest request,
+										@RequestParam("file") MultipartFile[] file) throws Exception{
 		System.out.println("/product/updateProduct : POST");
+		
+		String uploadPath = request.getRealPath("/images/uploadFiles")+"\\";
+		
+		String fileOriginName = "";
+		String fileMultiName = "";
+		
+		//기존 파일 삭제
+		if(product.getFileName().contains(",")) {
+			for( String fileName : product.getFileName().split(",") ) {
+				new File(uploadPath+fileName).delete();
+				System.out.println(fileName+" 삭제 완료");
+			}
+		}else {
+			new File(uploadPath+product.getFileName()).delete();
+			System.out.println(product.getFileName()+" 삭제 완료");
+		}
+		
+		for(int i=0; i<file.length; i++) {
+			fileOriginName = file[i].getOriginalFilename();
+			System.out.println("기존 파일명 : "+fileOriginName);
+			SimpleDateFormat formatter = new SimpleDateFormat("YYYYMMDD_HHMMSS_"+i);
+			Calendar now = Calendar.getInstance();
+			
+			//확장자명
+			String extension = fileOriginName.split("\\.")[1];
+			
+			//fileOriginName에 날짜+.+확장자명으로 저장시킴.
+			fileOriginName = formatter.format(now.getTime())+"."+extension;
+			System.out.println("변경된 파일명 : "+fileOriginName);
+			
+			File f = new File(uploadPath+fileOriginName); 
+			file[i].transferTo(f);
+			if(i==0) { fileMultiName += fileOriginName; }
+			else{ fileMultiName += ","+fileOriginName; }
+		}
+		System.out.println("*"+fileMultiName);
+		product.setFileName(fileMultiName);
 		
 		productService.updateProduct(product);
 		
-		//return "forward:/product/detailProduct.jsp";
 		return "forward:/product/getProduct?prodNo="+product.getProdNo();
 	}
 
