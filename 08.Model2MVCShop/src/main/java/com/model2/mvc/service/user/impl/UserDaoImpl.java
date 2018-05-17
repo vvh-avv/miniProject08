@@ -43,7 +43,6 @@ public class UserDaoImpl implements UserDao{
 
 	public List<User> getUserList(Search search, String sort) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
 		map.put("search", search);
 		map.put("sort", sort);
 		
